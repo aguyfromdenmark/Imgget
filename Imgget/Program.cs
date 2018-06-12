@@ -2,6 +2,7 @@
 using System.Net;
 using System.Linq;
 using System.Threading;
+using System.IO;
 
 namespace Imgget
 {
@@ -9,12 +10,16 @@ namespace Imgget
     {
         public static void Main(string[] args)
         {
+            Console.SetIn(new StreamReader(Console.OpenStandardInput(214748364), Console.InputEncoding, false, 214748364));
+
             string userName = GetUserName();
 
             OpenAccountPage(userName);
             WriteInitialInstructions();
 
             var imageLinks = GetImageLinks();
+
+            Directory.CreateDirectory(userName);
 
             Console.WriteLine("Processing");
             DownloadFiles(userName, imageLinks);
@@ -33,22 +38,26 @@ namespace Imgget
 
                     var fileName = GetFileName(imageLinksList[i]);
 
-                    var downloadPath = $"{userName}/{fileName}";
+                    var downloadPath = userName + "/" + fileName;
 
-                    if (!System.IO.File.Exists(downloadPath))
+                    if (!File.Exists(downloadPath))
                     {
+                        Console.WriteLine($"Downloading {i} of {imageLinksList.Count}...");
                         webClient.DownloadFile(imageLinks[i], downloadPath);
 
                         Thread.Sleep(500);
 
-                        if (i % 50 == 0)
+                        if (i > 0 && i % 50 == 0)
                         {
-                            Console.WriteLine("50 images has been downloaded. Cool down time.");
+                            Console.WriteLine("50 images has been downloaded. Cool down time. Resume in 10 seconds.");
                             Thread.Sleep(10000);
                         }
                     }
 
                 }
+
+                Console.WriteLine("Job's done! Press any key to quit.");
+                Console.ReadKey();
             }
         }
 
@@ -70,9 +79,12 @@ namespace Imgget
             Console.WriteLine("Copy and paste this JS code into the developer javascript console window:");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("var imgElements = document.getElementsByTagName('article')[0].querySelectorAll('img');var imgSrcArray = [];for (var i = 0; i < imgElements.length; i++){imgSrcArray.push(imgElements[i].getAttribute('src'));}imgSrcArray.toString();");
+            Console.WriteLine("var imgSrcArray = [];var interval = setInterval(function() {window.scrollTo(0, document.body.scrollHeight);var imgElements = document.getElementsByTagName('article')[0].querySelectorAll('img');for (var i = 0; i < imgElements.length; i++){imgSrcArray.push(imgElements[i].getAttribute('src'));}},300);");
+            Console.WriteLine("");
+            Console.WriteLine("Now copy and paste this jscode into the developer javascript console window:");
             Console.WriteLine("");
             Console.WriteLine("");
+            Console.WriteLine("var uniqueArray = imgSrcArray.filter(function(item, pos) {return imgSrcArray.indexOf(item) == pos;});uniqueArray.toString();");
             Console.WriteLine("Now copy and paste the long string of links into this window:");
         }
 
@@ -83,7 +95,7 @@ namespace Imgget
         public static string GetFileName(string fileUrl){
             var startIndex = fileUrl.LastIndexOf('/');
 
-            return fileUrl.Substring(startIndex);
+            return fileUrl.Substring(startIndex + 1);
         }
     }
 }
