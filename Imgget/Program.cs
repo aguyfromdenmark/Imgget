@@ -43,7 +43,15 @@ namespace Imgget
                     if (!File.Exists(downloadPath))
                     {
                         Console.WriteLine($"Downloading {i} of {imageLinksList.Count}...");
-                        webClient.DownloadFile(imageLinks[i], downloadPath);
+                        try
+                        {
+                            webClient.DownloadFile(imageLinks[i], downloadPath);
+
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
 
                         Thread.Sleep(500);
 
@@ -68,7 +76,7 @@ namespace Imgget
 
         private static string GetUserName()
         {
-            Console.WriteLine("Enter username");
+            Console.WriteLine("Enter username (IG Account will open in your browser. Chrome recommended)");
             return Console.ReadLine();
         }
 
@@ -81,10 +89,13 @@ namespace Imgget
             Console.WriteLine("");
             Console.WriteLine("var imgSrcArray = [];var interval = setInterval(function() {window.scrollTo(0, document.body.scrollHeight);var imgElements = document.getElementsByTagName('article')[0].querySelectorAll('img');for (var i = 0; i < imgElements.length; i++){imgSrcArray.push(imgElements[i].getAttribute('src'));}},300);");
             Console.WriteLine("");
-            Console.WriteLine("Now copy and paste this jscode into the developer javascript console window:");
+            Console.WriteLine("");
+            Console.WriteLine("Now copy and paste this jscode into the developer javascript console window. Copy the full result.");
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("var uniqueArray = imgSrcArray.filter(function(item, pos) {return imgSrcArray.indexOf(item) == pos;});uniqueArray.toString();");
+            Console.WriteLine("");
+            Console.WriteLine("");
             Console.WriteLine("Now copy and paste the long string of links into this window:");
         }
 
