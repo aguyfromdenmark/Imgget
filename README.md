@@ -1,7 +1,7 @@
+** NOT MAINTAINED **
+
 # Imgget
 For backing up images from Instagram.
-
-[Download executable here](https://my.pcloud.com/publink/show?code=XZvPGu7ZMKBKGRRNOCb7gJlp5zcSRzaohbzX)
 
 **Intended for personal use and educational use only!**
 
