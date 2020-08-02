@@ -1,4 +1,4 @@
-** NOT MAINTAINED **
+
 
 # Imgget
 For backing up images from Instagram.
@@ -21,4 +21,4 @@ There is another delay for each 50 images, again, to prevent server from shuttin
 
 I have successfully tested the app by downloading an entire account of pictures (a bit over 1500). No errors. 
 
-I will probably continue development on this. I also have another project in my mind. 
+**NOT MAINTAINED**
